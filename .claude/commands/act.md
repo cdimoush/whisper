@@ -1,12 +1,12 @@
 ---
-allowed-tools: Bash(python:*), Bash(uv:*), Bash(mkdir:*), Read, Write, Edit, Glob, Grep, WebFetch, WebSearch
+allowed-tools: Bash(python:*), Bash(uv:*), Bash(mkdir:*), Bash(mv:*), Bash(date:*), Read, Write, Edit, Glob, Grep, WebFetch, WebSearch
 description: Transcribe audio and act on the request
 argument-hint: <audio-file-path>
 ---
 
 # Act on Audio
 
-Transcribe the provided audio file and execute the request spoken within it.
+Transcribe the provided audio file, generate an intelligent title, and execute the request spoken within it.
 
 ## Step 1: Transcribe the Audio
 
@@ -16,9 +16,31 @@ Run the transcription script:
 uv run python scripts/transcribe.py $ARGUMENTS
 ```
 
-## Step 2: Analyze the Transcription
+Save the full transcription text for use in subsequent steps.
 
-After receiving the transcription, analyze it to identify:
+## Step 2: Generate Intelligent Title
+
+Use the transcription to generate a memorable, descriptive title:
+
+```bash
+uv run python scripts/generate_title.py --text "{transcription_text}"
+```
+
+Save the generated title (e.g., `api-refactor-discussion`).
+
+## Step 3: Create Timestamp
+
+Get the current timestamp:
+
+```bash
+date +%Y-%m-%d_%H-%M-%S
+```
+
+Save the timestamp (e.g., `2026-01-08_14-30-22`).
+
+## Step 4: Analyze the Transcription
+
+Analyze the transcription to identify:
 
 1. **Request Type**: What is the user asking for?
    - **Summary**: User wants a summary of ideas, thoughts, or content they described
@@ -31,26 +53,28 @@ After receiving the transcription, analyze it to identify:
 
 3. **Deliverables**: What output files should be created?
 
-## Step 3: Create Output Directory
+## Step 5: Create Output Directory
 
-Create a timestamped output directory:
+Create the output directory using the generated title and timestamp:
 
 ```bash
-mkdir -p output/$(date +%Y-%m-%d_%H-%M-%S)
+mkdir -p "output/{title}_{timestamp}/"
 ```
+
+Example: `output/api-refactor-discussion_2026-01-08_14-30-22/`
 
 Store the directory path for use in subsequent steps.
 
-## Step 4: Create README.md
+## Step 6: Create README.md
 
 In the output directory, create a `README.md` with the following structure:
 
 ```markdown
-# [Brief Title Based on Request]
+# {Generated Title}
 
 ## Source
-- **Audio File**: [original audio file path]
-- **Transcribed**: [current timestamp]
+- **Audio File**: [original filename] (included in this directory)
+- **Transcribed**: [timestamp]
 
 ## Transcription Summary
 [2-3 sentence summary of what was spoken]
@@ -72,7 +96,7 @@ In the output directory, create a `README.md` with the following structure:
 </details>
 ```
 
-## Step 5: Execute the Request
+## Step 7: Execute the Request
 
 Based on the request type, create the appropriate deliverables in the output directory:
 
@@ -106,12 +130,22 @@ Based on the request type, create the appropriate deliverables in the output dir
 - Interpret the request and create appropriate output
 - Document your interpretation in the README
 
-## Step 6: Update README with Completion Status
+## Step 8: Update README with Completion Status
 
 After creating all deliverables, update the README.md:
 - Check off completed deliverables
 - Add any notes about the output
 - Include suggestions for follow-up if relevant
+
+## Step 9: Move Audio to Output Directory
+
+Move the processed audio file into the output directory alongside the transcription:
+
+```bash
+mv "$ARGUMENTS" "output/{title}_{timestamp}/"
+```
+
+This keeps everything together - the audio, transcription, and deliverables are all in one self-contained directory.
 
 ## Important Notes
 
@@ -119,3 +153,4 @@ After creating all deliverables, update the README.md:
 - If the request is unclear or contains multiple distinct asks, focus on the primary request and note others in the README
 - If research is requested, use WebSearch and WebFetch to gather current information
 - Maintain a professional, organized structure in all output files
+- Only move the audio after successful processing - if any step fails, leave the file in place for retry

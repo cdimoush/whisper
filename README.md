@@ -14,11 +14,10 @@ The queue system enables efficient batch processing of multiple voice memos. Ins
 
 ### Directory Structure
 
-- **queue/** - Unprocessed audio files waiting for transcription
-- **archive/** - Processed audio files (preserved for reference)
-- **output/** - Transcription results organized by intelligent title + timestamp
+- **queue/** - Unprocessed audio files waiting for processing
+- **output/** - Results organized by intelligent title + timestamp (includes source audio)
 
-Each directory contains a README explaining its purpose in detail.
+Each output directory is self-contained with the original audio, transcription, and deliverables.
 
 ### Queue Commands
 
@@ -32,7 +31,13 @@ Shows pending audio files, total duration, and estimated processing time.
 ```bash
 /process_queue
 ```
-Transcribes all audio files in `queue/` using parallel sub-agents, generates intelligent titles, and moves processed audio to `archive/`.
+Processes all audio files in `queue/` using parallel sub-agents. Each file is fully acted upon: transcribed, analyzed for requests, deliverables created, then moved to output.
+
+**Act on a single audio file:**
+```bash
+/act /path/to/audio.m4a
+```
+Transcribes the audio, generates an intelligent title, interprets the spoken request, creates deliverables (summaries, research, code, plans), and moves audio to output.
 
 ### Example Workflow
 
@@ -62,10 +67,10 @@ Transcribes all audio files in `queue/` using parallel sub-agents, generates int
    Successfully processed: 3
    ```
 
-4. **Browse transcriptions:**
-   - Check `output/` directory for organized transcriptions
+4. **Browse results:**
+   - Check `output/` directory for organized results
    - Example directory names: `api-refactor-discussion_2026-01-08_14-30-22/`
-   - Each contains a README with full transcription and metadata
+   - Each contains the source audio, README with transcription, and deliverables
 
 ### Output Organization
 
@@ -81,18 +86,24 @@ Example:
 
 Titles are auto-generated based on transcription content, making past memos easy to find.
 
-### Coming Soon: Instant Capture
+### Instant Capture
 
-**System-wide hotkey** (in development):
-- Press a global hotkey to start/stop recording from anywhere
-- Audio automatically saved to `queue/` with no manual file management
-- Works on macOS and Ubuntu
+Record voice memos directly to the queue with zero friction.
 
-**Claude command** (in development):
+**From terminal:**
 ```bash
-/record_memo
+./scripts/record_memo.sh        # Record (press Ctrl+C to stop)
+./scripts/record_memo.sh 60     # Record for max 60 seconds
 ```
-Start recording directly from within Claude Code sessions.
+
+**From Claude Code:**
+```bash
+/record_memo                    # Start recording from within session
+```
+
+**System-wide hotkey:**
+- Press a global hotkey to start/stop recording from anywhere
+- See [macOS Hotkey Setup](docs/hotkey-setup-macos.md) or [Ubuntu Hotkey Setup](docs/hotkey-setup-ubuntu.md)
 
 ## Architecture
 
@@ -103,6 +114,27 @@ See [Recording System Architecture](docs/architecture/recording-system.md) for d
 - Requires `OPENAI_API_KEY` in environment
 - Requires `ffmpeg` installed (`brew install ffmpeg` on macOS)
 - Install: `uv sync` or `pip install openai pydub python-dotenv`
+
+### Audio Recording (for instant capture)
+
+To use the recording features (`/record_memo`, hotkey capture), install sox:
+
+**macOS:**
+```bash
+brew install sox
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install sox libsox-fmt-all
+```
+
+Verify installation:
+```bash
+sox --version
+```
+
+**Note:** sox is only required for recording. Transcription of existing audio files works without sox.
 
 ## Supported Formats
 
@@ -122,6 +154,26 @@ See [Recording System Architecture](docs/architecture/recording-system.md) for d
 - For files >25MB: compress with ffmpeg or chunk
 - **Long audio**: Files over 8 minutes are automatically split into 5-minute chunks for reliable transcription
 - **Queue processing**: Process multiple voice memos at once with `/process_queue` (3-5x faster than one-at-a-time)
+
+## Troubleshooting
+
+### Audio Recording Issues
+
+**macOS: Microphone access denied**
+- Go to System Settings → Privacy & Security → Microphone
+- Enable microphone access for Terminal (or iTerm, or your terminal app)
+
+**Ubuntu: No default audio input device**
+- Check available devices: `arecord -l`
+- Set default device in PulseAudio settings
+- Test recording: `sox -d test.wav trim 0 5`
+
+**Recording quality issues**
+- Test with higher sample rate: `sox -d -r 44100 output.wav trim 0 5`
+- Ensure microphone is not muted in system settings
+
+**"sox: command not found"**
+- Install sox (see Setup section above)
 
 ---
 
@@ -146,7 +198,8 @@ Usage: `/transcribe /path/to/memo.m4a`
 ### Queue Commands
 
 - `/queue_status` - View pending audio files in queue
-- `/process_queue` - Batch process all queued audio files
+- `/process_queue` - Batch process all queued audio files (invokes `/act` for each)
+- `/act <path>` - Process a single audio file: transcribe, analyze, create deliverables, move to output
 
 ### With Frontmatter
 
