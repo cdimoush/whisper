@@ -204,7 +204,7 @@ rm -rf queue/test*.m4a queue/sample*.{m4a,mp3,wav}
 ## Notes
 
 - **Parallelization strategy**: Use multiple Task tool calls in a single message to spawn sub-agents concurrently
-- **Sub-agent model**: Use `model: "haiku"` for sub-agents to minimize cost (transcription and title generation are simple tasks)
+- **Sub-agent model**: Use `model: "sonnet"` for sub-agents to minimize cost (transcription and title generation are simple tasks)
 - **Error resilience**: If one sub-agent fails, others should continue processing (don't fail the entire batch)
 - **Scalability**: Designed to handle 1-50 files efficiently; for >50 files, may need to batch the sub-agent spawning
 - **Integration with act_on_audio**: This feature focuses on basic transcription + title + README; future enhancement could integrate act_on_audio's request detection (summary, research, code, planning)

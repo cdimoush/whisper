@@ -19,7 +19,7 @@ Process all audio files in the queue/ directory using parallel sub-agents that i
    Queue is empty. Add audio files to queue/ directory.
    ```
 
-4. **Process files in parallel**: For each audio file, spawn a Task agent (subagent_type: "general-purpose", model: "haiku") with this prompt:
+4. **Process files in parallel**: For each audio file, spawn a Task agent (subagent_type: "general-purpose", model: "sonnet") with this prompt:
 
    ```
    Process this audio file by invoking the /act command. Working directory: /Users/conner/dev/whisper
