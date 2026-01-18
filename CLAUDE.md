@@ -650,3 +650,10 @@ For issues or questions about Whisper development:
 *Last updated: 2026-01-17*
 
 **Tags**: `whisper` `documentation` `agent-guide` `brain` `context-injection` `workflow` `reference`
+
+## Active Technologies
+- Python 3.12+ (matching whisper, modern features) + openai (transcription), click (CLI), shutil/pathlib (file operations) (001-aura-workflow-layer)
+- File-based (markdown specs, .claude/ commands, .beads/ tasks) (001-aura-workflow-layer)
+
+## Recent Changes
+- 001-aura-workflow-layer: Added Python 3.12+ (matching whisper, modern features) + openai (transcription), click (CLI), shutil/pathlib (file operations)
