@@ -121,6 +121,41 @@ Record, transcribe, and copy to clipboard instantly - no files saved to queue.
 - Same setup as above, but import `scripts/instant_memo_raycast.sh` instead
 - Use this for quick notes, dictation, or capturing thoughts without saving files
 
+## Task Tracking with Beads (New!)
+
+Whisper uses [Beads](https://github.com/steveyegge/beads) for AI-native issue tracking and agent memory across sessions.
+
+### Quick Setup
+
+```bash
+# Install Beads (if not already installed)
+curl -fsSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash
+
+# Initialize in project (already done in this repo)
+bd init
+```
+
+### Key Commands
+
+```bash
+bd ready              # Find available work (no blockers)
+bd create "Task"      # Create a new task
+bd show <id>          # View task details
+bd update <id> --status in_progress  # Claim work
+bd close <id>         # Complete work
+bd list               # View all open tasks
+bd sync               # Sync with git
+```
+
+### Why Beads?
+
+- **Agent Memory**: Agents remember work across sessions via `bd ready`
+- **Dependency Tracking**: Tasks can block other tasks, agents see only ready work
+- **Git-Native**: Issues stored in `.beads/issues.jsonl`, synced like code
+- **Zero Context Loss**: No more re-explaining "where did we leave off?"
+
+See `AGENTS.md` for the complete workflow guide.
+
 ## Brain System (New!)
 
 The `brain/` directory is Whisper's persistent memory - context that agents access across all voice memos. This solves the problem of agents starting from scratch every conversation.
