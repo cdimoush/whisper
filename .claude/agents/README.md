@@ -4,7 +4,22 @@ Sub-agents are specialized agents that the main Claude agent can deploy to handl
 
 ## Available Agents
 
-### feature-dev
+### spec-executor (Recommended)
+**Purpose**: Beads-aware spec implementation with parallel execution support.
+
+**When to use**:
+- Implementing specs from an epic directory
+- Working through beads-tracked tasks
+- Multiple independent specs can run in parallel (deploy in single message)
+
+**Key features**:
+- Automatic beads task lifecycle (in_progress → closed)
+- Structured report output for coordination
+- Optimized for parallel Opus 4.5 instances
+
+**See**: [spec-executor.md](./spec-executor.md)
+
+### feature-dev (Legacy)
 **Purpose**: Implement individual features or chores from spec files.
 
 **When to use**:
