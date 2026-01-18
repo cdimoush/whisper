@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(./scripts/record_memo.sh:*), Bash(scripts/record_memo.sh:*), Bash(ls:*), Glob
+allowed-tools: Bash(sox:*), Bash(rec:*), Bash(ls:*), Bash(mkdir:*), Bash(date:*), Glob
 description: Record voice memo to queue
 argument-hint: [duration_in_seconds]
 ---
@@ -8,32 +8,53 @@ argument-hint: [duration_in_seconds]
 
 Record audio from your microphone and save to `.aura/queue/` for transcription.
 
+## Prerequisites
+
+- `sox` must be installed
+  - macOS: `brew install sox`
+  - Ubuntu: `sudo apt-get install sox libsox-fmt-all`
+
 ## Instructions
 
-1. Run the recording script with optional duration (default 5 minutes):
+1. Create the queue directory if it doesn't exist:
    ```bash
-   ./scripts/record_memo.sh $ARGUMENTS
+   mkdir -p .aura/queue
    ```
 
-2. The script will:
-   - Display "Recording..." indicator
-   - Record until Ctrl+C or max duration reached
-   - Save to `.aura/queue/memo_YYYY-MM-DD_HH-MM-SS.wav`
+2. Generate filename with timestamp:
+   ```bash
+   FILENAME=".aura/queue/memo_$(date +%Y%m%d_%H%M%S).wav"
+   ```
 
-3. After recording completes, show the user:
-   - File location and size
+3. Start recording:
+   ```bash
+   # Default: record until Ctrl+C
+   rec "$FILENAME"
+
+   # Or with duration limit (if $ARGUMENTS provided):
+   rec "$FILENAME" trim 0 $ARGUMENTS
+   ```
+
+4. After recording completes, show the user:
+   - File location and size: `ls -lh "$FILENAME"`
    - Next steps: `/aura.transcribe` or `/aura.act`
-
-## Error Handling
-
-If sox is not installed, the script will display installation instructions.
-
-If recording fails, check:
-- Microphone permissions (macOS: System Settings > Privacy & Security > Microphone)
-- sox installation: `sox --version`
 
 ## Tips
 
 - **Stop early**: Press Ctrl+C to stop before max duration
 - **Custom duration**: `/aura.record 60` for 60-second max
 - **Batch process**: Record multiple memos, then process with `/aura.act`
+
+## Error Handling
+
+If sox is not installed:
+```
+sox/rec command not found.
+Install with:
+  macOS: brew install sox
+  Ubuntu: sudo apt-get install sox libsox-fmt-all
+```
+
+If recording fails, check:
+- Microphone permissions (macOS: System Settings > Privacy & Security > Microphone)
+- Audio device availability: `sox --help-device`

@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(python:*), Bash(uv:*), Bash(mkdir:*), Bash(mv:*), Bash(date:*), Bash(curl:*), Read, Write, Edit, Glob, Grep, WebFetch, WebSearch
+allowed-tools: Bash(python:*), Bash(mkdir:*), Bash(mv:*), Bash(date:*), Read, Write, Edit, Glob, Grep, WebFetch, WebSearch
 description: Transcribe audio and act on the request
 argument-hint: <audio-file-path>
 ---
@@ -8,24 +8,34 @@ argument-hint: <audio-file-path>
 
 Transcribe the provided audio file, generate an intelligent title, and execute the request spoken within it.
 
+## Prerequisites
+
+- `OPENAI_API_KEY` environment variable must be set
+- Dependencies installed: `pip install -r .aura/scripts/requirements.txt`
+
 ## Step 1: Transcribe the Audio
 
-Use the OpenAI Whisper API to transcribe:
+Use the local transcription script:
 
 ```bash
-curl -s https://api.openai.com/v1/audio/transcriptions \
-  -H "Authorization: Bearer $OPENAI_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
-  -F file="@$ARGUMENTS" \
-  -F model="gpt-4o-mini-transcribe" \
-  -F response_format="text"
+python .aura/scripts/transcribe.py "$ARGUMENTS"
 ```
 
 Save the full transcription text for use in subsequent steps.
 
 ## Step 2: Generate Intelligent Title
 
-Analyze the transcription and create a descriptive, kebab-case title (3-5 words).
+Use the title generation script:
+
+```bash
+echo "$TRANSCRIPT" | python .aura/scripts/generate_title.py
+```
+
+Or if transcript is in a variable, use `--text`:
+
+```bash
+python .aura/scripts/generate_title.py --text "$TRANSCRIPT"
+```
 
 Examples of good titles:
 - `player-movement-feature-request`
@@ -60,7 +70,7 @@ Identify:
 Create the output directory using the generated title and timestamp:
 
 ```bash
-mkdir -p ".aura/output/{title}_{timestamp}/"
+mkdir -p ".aura/output/${TITLE}_${TIMESTAMP}/"
 ```
 
 Example: `.aura/output/api-refactor-discussion_2026-01-08_14-30-22/`
@@ -117,7 +127,7 @@ Based on the request type, create appropriate deliverables:
 Move the processed audio file into the output directory:
 
 ```bash
-mv "$ARGUMENTS" ".aura/output/{title}_{timestamp}/"
+mv "$ARGUMENTS" ".aura/output/${TITLE}_${TIMESTAMP}/"
 ```
 
 ## Important Notes
