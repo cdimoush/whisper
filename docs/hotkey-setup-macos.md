@@ -6,8 +6,9 @@ Set up a global hotkey to record voice memos from anywhere on your Mac.
 
 | Item | Value |
 |------|-------|
-| Recommended Hotkey | `Ctrl+Shift+R` |
-| Script Path | `/path/to/whisper/scripts/record_memo.sh` |
+| **Recommended Method** | **Raycast (easiest, fastest)** |
+| Record to Queue | `Ctrl+Shift+R` |
+| Instant to Clipboard | `Ctrl+Shift+T` (optional) |
 | Stop Recording | `Ctrl+C` in terminal window |
 | Check Queue | `/queue_status` in Claude Code |
 | Process Queue | `/process_queue` in Claude Code |
@@ -18,7 +19,53 @@ Set up a global hotkey to record voice memos from anywhere on your Mac.
 2. **Microphone permissions**: Terminal must have microphone access
 3. **Recording script tested**: `./scripts/record_memo.sh --help`
 
-## Method 1: Automator + System Shortcuts (Free, Built-in)
+## Method 1: Raycast (Recommended - 2 Minutes Setup)
+
+**Why Raycast?** Fastest setup, auto-closes terminal, works reliably, plus you get a better Spotlight replacement.
+
+### Setup
+
+1. **Install Raycast**:
+   ```bash
+   brew install --cask raycast
+   ```
+
+2. **Open Raycast** and allow it to replace Spotlight (optional but recommended)
+
+3. **Import the script**:
+   - Press `Cmd+Space` to open Raycast
+   - Type: **Import Script Command**
+   - Navigate to: `/path/to/whisper/scripts/record_memo_raycast.sh`
+   - Raycast will auto-detect it with the 🎙️ icon
+
+4. **Assign hotkey**:
+   - In Raycast, type: **Record Memo (Hotkey)**
+   - Press `Cmd+K` when you see it
+   - Choose **Assign Hotkey**
+   - Press: `Ctrl+Shift+R`
+
+5. **Done!** Press `Ctrl+Shift+R` from anywhere, record, press `Ctrl+C`, terminal auto-closes.
+
+### Optional: Add Instant Memo (Clipboard)
+
+For quick dictation without saving files, add a second hotkey:
+
+1. In Raycast, type: **Import Script Command**
+2. Select: `/path/to/whisper/scripts/instant_memo_raycast.sh`
+3. Assign hotkey (e.g., `Ctrl+Shift+T`)
+4. Now you have two options:
+   - `Ctrl+Shift+R` → Record to queue (for processing later)
+   - `Ctrl+Shift+T` → Instant transcription to clipboard (no files saved)
+
+### Advantages
+
+- ✅ Terminal automatically closes after recording
+- ✅ Clean, fast workflow
+- ✅ Raycast replaces Spotlight with better features
+- ✅ 2-minute setup
+- ✅ Optional instant clipboard transcription
+
+## Method 2: Automator + System Shortcuts (Free, Built-in)
 
 This method uses macOS built-in tools with no additional software.
 

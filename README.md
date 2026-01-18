@@ -101,9 +101,25 @@ Record voice memos directly to the queue with zero friction.
 /record_memo                    # Start recording from within session
 ```
 
+**System-wide hotkey (Recommended):**
+- Press `Ctrl+Shift+R` to record and save to queue
+- **macOS**: Uses Raycast - see [macOS Hotkey Setup](docs/hotkey-setup-macos.md)
+- **Ubuntu**: Uses GNOME/xbindkeys - see [Ubuntu Hotkey Setup](docs/hotkey-setup-ubuntu.md)
+
+### Instant Memo to Clipboard
+
+Record, transcribe, and copy to clipboard instantly - no files saved to queue.
+
+**From terminal:**
+```bash
+./scripts/instant_memo.sh       # Record, transcribe, copy to clipboard
+./scripts/instant_memo.sh 30    # Record for max 30 seconds
+```
+
 **System-wide hotkey:**
-- Press a global hotkey to start/stop recording from anywhere
-- See [macOS Hotkey Setup](docs/hotkey-setup-macos.md) or [Ubuntu Hotkey Setup](docs/hotkey-setup-ubuntu.md)
+- Set up a second hotkey (e.g., `Ctrl+Shift+T`) for instant transcription
+- Same setup as above, but import `scripts/instant_memo_raycast.sh` instead
+- Use this for quick notes, dictation, or capturing thoughts without saving files
 
 ## Architecture
 
