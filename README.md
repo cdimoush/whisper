@@ -121,9 +121,45 @@ Record, transcribe, and copy to clipboard instantly - no files saved to queue.
 - Same setup as above, but import `scripts/instant_memo_raycast.sh` instead
 - Use this for quick notes, dictation, or capturing thoughts without saving files
 
+## Brain System (New!)
+
+The `brain/` directory is Whisper's persistent memory - context that agents access across all voice memos. This solves the problem of agents starting from scratch every conversation.
+
+### What's in the Brain
+
+- **summary.md** - Chronological summary of all memos to date
+- **claudes_wants_this.md** - Strategic roadmap and time allocation
+- **active_projects.md** - Current projects, priorities, and blockers
+- **people.md** - Team members and communication context
+- **technical_systems.md** - Architecture docs for all technical systems
+- **glossary.md** - Technical terms, acronyms, project names
+- **tags.md** - Tagging strategy and tag reference
+
+### Why Brain Matters
+
+**Before**: "Help me with Design Lab" → Agent: "What's Design Lab?" → Explain for 5 minutes
+
+**After**: "Design Lab work - check brain/technical_systems.md" → Agent: [Reads once, gets to work]
+
+### Usage
+
+Brain files are automatically referenced by agents when processing voice memos. You can also manually point to them:
+
+```bash
+# In a voice memo, mention:
+"See brain/active_projects.md for context on Simulation Mandate"
+"Check brain/people.md for info about Nick"
+```
+
+Future: Automatic context injection based on project tags (see brain/tags.md).
+
+**Note**: brain/ is not committed to git (personal context). Each user maintains their own brain.
+
 ## Architecture
 
 See [Recording System Architecture](docs/architecture/recording-system.md) for design decisions and system overview. This document explains the standalone hotkey + Claude integration approach, queue-based processing pipeline, and technology choices.
+
+For Claude Code agents, see [CLAUDE.md](CLAUDE.md) for complete agent guide including brain system usage, tagging strategy, and development workflows.
 
 ## Setup
 

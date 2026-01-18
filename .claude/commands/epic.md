@@ -9,6 +9,7 @@ Create an epic document in specs/epic-*/README.md that breaks a vision into orde
 
 ## Instructions
 
+- **Read brain context first**: `brain/active_projects.md`, `brain/technical_systems.md`, `brain/glossary.md`
 - If a vision document is provided, read it first to understand the strategic context.
 - If no vision document is provided, create a focused epic for the given scope.
 - Break the chosen path into ordered feature and chore specs.
@@ -17,6 +18,7 @@ Create an epic document in specs/epic-*/README.md that breaks a vision into orde
 - Create the document as `specs/epic-<name>/README.md`.
 - Replace every `<placeholder>` with specific details.
 - THINK HARD about dependencies and order. Specs should build on each other logically.
+- Reference brain files for context on technical systems and project priorities.
 
 ## Relevant Files
 
@@ -25,6 +27,9 @@ Create an epic document in specs/epic-*/README.md that breaks a vision into orde
 - `specs/epic-*/` - Example epic structures
 - `.claude/commands/feature.md` - Feature spec format
 - `.claude/commands/chore.md` - Chore spec format
+- `brain/active_projects.md` - Current project context
+- `brain/technical_systems.md` - Technical architecture
+- `brain/claudes_wants_this.md` - Strategic priorities
 
 ## Epic Format
 

@@ -1,12 +1,34 @@
 ---
 allowed-tools: Bash(python:*), Bash(uv:*), Bash(mkdir:*), Bash(mv:*), Bash(date:*), Read, Write, Edit, Glob, Grep, WebFetch, WebSearch
 description: Transcribe audio and act on the request
-argument-hint: <audio-file-path>
+argument-hint: <audio-file-path> [--project=<project-name>]
 ---
 
 # Act on Audio
 
 Transcribe the provided audio file, generate an intelligent title, and execute the request spoken within it.
+
+## Step 0: Load Brain Context
+
+**IMPORTANT**: Before transcribing, read relevant brain files for context.
+
+**Always include**:
+- `brain/active_projects.md` - Current priorities and projects
+- `brain/glossary.md` - Terminology and technical terms
+
+**Include based on project flag or content**:
+- If `--project=design-lab` or memo mentions Design Lab → `brain/technical_systems.md`
+- If `--project=simulation-mandate` or mentions Simulation Mandate → `brain/technical_systems.md`, `brain/people.md`
+- If strategic planning topics → `brain/claudes_wants_this.md`
+- If mentions people (Nick, Shiva, Melissa) → `brain/people.md`
+
+**Check for project flag**:
+```bash
+# Extract project flag from $ARGUMENTS if present
+# Example: $ARGUMENTS = "audio.m4a --project=simulation-mandate"
+```
+
+If project flag is provided, use it to determine context. Otherwise, load context after transcription based on content analysis.
 
 ## Step 1: Transcribe the Audio
 
@@ -42,16 +64,28 @@ Save the timestamp (e.g., `2026-01-08_14-30-22`).
 
 Analyze the transcription to identify:
 
-1. **Request Type**: What is the user asking for?
+1. **Project Context**: What project(s) does this relate to?
+   - Check against `brain/active_projects.md`
+   - Look for mentions of: Design Lab, Simulation Mandate, Whisper, Hologram, Apollo 3
+   - Load additional brain context if not already loaded (technical_systems.md, people.md)
+
+2. **Request Type**: What is the user asking for?
    - **Summary**: User wants a summary of ideas, thoughts, or content they described
    - **Research**: User wants research on a topic, including sources and analysis
    - **Code**: User wants code, scripts, or technical implementation
    - **Planning**: User wants a plan, outline, or structured approach
    - **Other**: Any other actionable request
 
-2. **Key Details**: Extract the main topics, requirements, constraints, and goals mentioned
+3. **Key Details**: Extract the main topics, requirements, constraints, and goals mentioned
+   - Reference brain files for context (technical terms from glossary.md, people from people.md)
 
-3. **Deliverables**: What output files should be created?
+4. **Deliverables**: What output files should be created?
+
+5. **Tags**: What tags apply? (see `brain/tags.md`)
+   - Project tags (design-lab, simulation-mandate, whisper, etc.)
+   - Technology tags (isaac-sim, ros2, etc.)
+   - People tags (nick-cto, shiva-vp, etc.)
+   - Process tags (strategic-planning, meta-work, etc.)
 
 ## Step 5: Create Output Directory
 
@@ -79,6 +113,9 @@ In the output directory, create a `README.md` with the following structure:
 ## Transcription Summary
 [2-3 sentence summary of what was spoken]
 
+## Project Context
+[Which project(s) this relates to - reference brain/active_projects.md]
+
 ## Request Identified
 - **Type**: [Summary/Research/Code/Planning/Other]
 - **Description**: [What the user is asking for]
@@ -87,6 +124,13 @@ In the output directory, create a `README.md` with the following structure:
 - [ ] [List of files that will be created]
 - [ ] [Each file with brief description]
 
+## Brain Context Used
+[List which brain files were referenced for context]
+- brain/active_projects.md
+- brain/technical_systems.md (if applicable)
+- brain/people.md (if applicable)
+- etc.
+
 ## Full Transcription
 <details>
 <summary>Click to expand full transcription</summary>
@@ -94,6 +138,12 @@ In the output directory, create a `README.md` with the following structure:
 [Full transcription text]
 
 </details>
+
+---
+
+## Tags
+
+`[tag1]` `[tag2]` `[tag3]` (see brain/tags.md)
 ```
 
 ## Step 7: Execute the Request

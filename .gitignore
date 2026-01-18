@@ -12,8 +12,11 @@ __pycache__/
 venv/
 ENV/
 
-# Output
+# User Folders
 output/
+archive/
+queue/
+brain/
 
 # Audio files
 *.mp3

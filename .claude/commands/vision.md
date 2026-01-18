@@ -9,6 +9,7 @@ Create a high-level strategy document in specs/vision-*.md that explores the `Vi
 
 ## Instructions
 
+- **Read brain context first**: `brain/active_projects.md`, `brain/technical_systems.md`, `brain/glossary.md`
 - Research the codebase before planning. Start with `README.md`.
 - Analyze the current state and identify gaps between where we are and where we want to be.
 - Propose multiple implementation paths with clear trade-offs for each.
@@ -17,12 +18,16 @@ Create a high-level strategy document in specs/vision-*.md that explores the `Vi
 - Create the document as `specs/vision-<name>.md`. Name it based on the `Vision`.
 - Replace every `<placeholder>` with specific details.
 - THINK HARD about the big picture. This is strategic planning, not tactical execution.
+- Reference brain files for context on projects, technical systems, and terminology.
 
 ## Relevant Files
 
 - `README.md` - Project overview
 - `specs/` - Example specs and vision documents
 - `docs/` - Architecture documentation
+- `brain/active_projects.md` - Current project context
+- `brain/technical_systems.md` - Technical architecture reference
+- `brain/claudes_wants_this.md` - Strategic priorities
 
 ## Vision Format
 
