@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+# Raycast Script Command Metadata
+# @raycast.schemaVersion 1
+# @raycast.title Record Voice Memo
+# @raycast.mode silent
+# @raycast.packageName Whisper
+# @raycast.icon 🎙️
+
 #
 # record_memo.sh - Record voice memo and save to queue/
 #
